@@ -1,4 +1,4 @@
-namespace GestionComex.Models
+﻿namespace GestionComex.Models
 {
     public class ErrorViewModel
     {

@@ -1,4 +1,5 @@
 ﻿using GestionComex.Data.Repository.Interfaces;
+using GestionComex.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,12 +15,39 @@ namespace GestionComex.Controllers
         }
 
         // GET: ClientesController
-        
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var clientes = await _clienteRepository.GetAll();
             return View(clientes);
         }
+
+        [HttpGet]        
+        public ActionResult Create()
+        {
+            var cliente = new Clientes
+            {
+                Activo = true 
+            };
+            return View(cliente);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Clientes cliente)
+        {
+          
+            if(ModelState.IsValid)
+            {
+                await _clienteRepository.Add(cliente);
+                return RedirectToAction(nameof(Index)); 
+            }
+            
+            
+            return View(cliente);
+        }
+
 
         // GET: ClientesController/Details/5
         public ActionResult Details(int id)
@@ -27,26 +55,6 @@ namespace GestionComex.Controllers
             return View();
         }
 
-        // GET: ClientesController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ClientesController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
         // GET: ClientesController/Edit/5
         public ActionResult Edit(int id)

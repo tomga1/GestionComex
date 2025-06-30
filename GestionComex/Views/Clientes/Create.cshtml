@@ -1,0 +1,48 @@
+﻿@model GestionComex.Models.Clientes
+
+@{
+    ViewData["Title"] = "Crear Cliente";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Create" method="post" novalidate>
+    <div class="mb-3">
+        <label asp-for="CUIT" class="form-label"></label>
+        <input asp-for="CUIT" class="form-control" />
+        <span asp-validation-for="CUIT" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="RazonSocial" class="form-label"></label>
+        <input asp-for="RazonSocial" class="form-control" />
+        <span asp-validation-for="RazonSocial" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Telefono" class="form-label"></label>
+        <input asp-for="Telefono" class="form-control" />
+        <span asp-validation-for="Telefono" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Direccion" class="form-label"></label>
+        <input asp-for="Direccion" class="form-control" />
+        <span asp-validation-for="Direccion" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="Activo" class="form-check-input" type="checkbox" />
+        <label asp-for="Activo" class="form-check-label"></label>
+        <span asp-validation-for="Activo" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

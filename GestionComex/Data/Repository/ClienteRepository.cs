@@ -19,6 +19,11 @@ namespace GestionComex.Data.Repository
             return clientes; 
         }
 
+        public async Task Add(Clientes cliente)
+        {
+            _context.Clientes.Add(cliente);
+            await _context.SaveChangesAsync();
+        }
 
     }
 }

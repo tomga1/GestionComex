@@ -7,21 +7,17 @@
         $cuit.removeClass("is-invalid");
         $cuitError.text("");
     }
-
     $cuit.on('blur', function () {
         var cuit = $cuit.val().trim();
 
-        // Si borró todo
         if (cuit === "") {
             clearValidation();
             $razon.val("");
-            // Mostrar mensaje de CUIT inexistente
             $cuit.addClass("is-invalid");
             $cuitError.text("CUIT inexistente");
             return;
         }
 
-        // Longitud incorrecta
         if (cuit.length !== 11) {
             clearValidation();
             $razon.val("");
@@ -30,20 +26,16 @@
             return;
         }
 
-        // Longitud OK, limpiamos errores previos
         clearValidation();
 
-        // AJAX al endpoint local
         $.ajax({
             url: '/Clientes/ObtenerRazonSocial',
             type: 'GET',
             data: { cuit: cuit },
             success: function (data) {
-                // data puede venir vacío o con '@nombre'
                 if (data && data.length > 0 && data !== "@nombre") {
                     $razon.val(data);
                 } else {
-                    // CUIT no existe o servicio devolvió '@nombre'
                     clearValidation();
                     $razon.val("");
                     $cuit.addClass("is-invalid");

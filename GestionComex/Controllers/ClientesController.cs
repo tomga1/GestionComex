@@ -17,8 +17,6 @@ namespace GestionComex.Controllers
             _clienteService = clienteService;   
         }
 
-        // GET: ClientesController
-
         [HttpGet]
         public async Task<IActionResult> Index()
         {

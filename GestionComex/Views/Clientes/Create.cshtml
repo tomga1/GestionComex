@@ -9,13 +9,13 @@
 <form asp-action="Create" method="post" novalidate>
     <div class="mb-3">
         <label asp-for="CUIT" class="form-label"></label>
-        <input asp-for="CUIT" class="form-control" />
+        <input asp-for="CUIT" class="form-control" id="cuit" />
         <span asp-validation-for="CUIT" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="RazonSocial" class="form-label"></label>
-        <input asp-for="RazonSocial" class="form-control" readonly/>
+        <input asp-for="RazonSocial" class="form-control" id="razonSocial" readonly/>
         <span asp-validation-for="RazonSocial" class="text-danger"></span>
     </div>
 
@@ -45,4 +45,5 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script src="~/js/clientes.js"></script>
 }

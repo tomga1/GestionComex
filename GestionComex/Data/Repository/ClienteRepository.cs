@@ -25,5 +25,9 @@ namespace GestionComex.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        public async Task<Clientes?> getByCUIT(string cuIT)
+        {
+            return await _context.Clientes.FirstOrDefaultAsync(c => c.CUIT == cuIT);
+        }
     }
 }

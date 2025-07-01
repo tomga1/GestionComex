@@ -6,6 +6,10 @@ namespace GestionComex.Data.Repository.Interfaces
     {
         Task<IEnumerable<Clientes>> GetAll();
         Task Add(Clientes clientes);
+        Task<Clientes?> getByCUIT(string cuIT);
+
+
+
 
     }
 }

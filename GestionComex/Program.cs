@@ -1,6 +1,8 @@
 using GestionComex.Data;
 using GestionComex.Data.Repository;
 using GestionComex.Data.Repository.Interfaces;
+using GestionComex.Services.IServices;
+using GestionComex.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddHttpClient<IClienteService, ClienteService>();
 
 
 

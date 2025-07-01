@@ -29,5 +29,21 @@ namespace GestionComex.Data.Repository
         {
             return await _context.Clientes.FirstOrDefaultAsync(c => c.CUIT == cuIT);
         }
+
+        public async Task Delete(int id)
+        {
+            var cliente = await getById(id);
+
+            if(cliente != null)
+            {
+                _context.Clientes.Remove(cliente);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<Clientes?> getById(int id)
+        {
+            return await _context.Clientes.FindAsync(id);
+        }
     }
 }

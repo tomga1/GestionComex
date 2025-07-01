@@ -101,25 +101,34 @@ namespace GestionComex.Controllers
             }
         }
 
-        // GET: ClientesController/Delete/5
-        public ActionResult Delete(int id)
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            var cliente = await _clienteService.getById(id);
+
+            if(cliente == null)
+            {
+                return NotFound();
+            }
+
+            return View(cliente);
         }
 
-        // POST: ClientesController/Delete/5
-        [HttpPost]
+
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
+            var cliente = await _clienteService.getById(id);
+
+            if(cliente == null)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
-            {
-                return View();
-            }
+
+            await _clienteService.Delete(id);
+            return RedirectToAction(nameof(Index));
+
         }
     }
 }

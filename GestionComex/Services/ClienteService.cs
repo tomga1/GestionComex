@@ -30,12 +30,20 @@ namespace GestionComex.Services
             await _clienteRepository.Add(clientes);
         }
 
+        public async Task Delete(int id)
+        {
+            await _clienteRepository.Delete(id);
+        }
+
         public async Task<IEnumerable<Clientes>> GetAll()
         {
             return await _clienteRepository.GetAll();
         }
 
-
+        public async Task<Clientes?> getById(int id)
+        {
+            return await _clienteRepository.getById(id);
+        }
 
         public async Task<string> GetRazonSocialPorCUIT(string cuit)
         {

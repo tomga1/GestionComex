@@ -1,6 +1,8 @@
 ﻿using GestionComex.Data.Repository.Interfaces;
+using GestionComex.DTOs;
 using GestionComex.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
 
 
 namespace GestionComex.Data.Repository
@@ -13,11 +15,25 @@ namespace GestionComex.Data.Repository
             _context = context; 
         }
 
+
         public async Task<IEnumerable<Clientes>> GetAll()
         {
             var clientes = await _context.Clientes.ToListAsync();
             return clientes; 
         }
+
+
+        public async Task<Clientes?> getByCUIT(string cuit)
+        {
+            return await _context.Clientes.FirstOrDefaultAsync(c => c.CUIT == cuit);
+        }
+
+
+        public async Task<Clientes?> getById(int id)
+        {
+            return await _context.Clientes.FindAsync(id);
+        }
+
 
         public async Task Add(Clientes cliente)
         {
@@ -25,10 +41,6 @@ namespace GestionComex.Data.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Clientes?> getByCUIT(string cuIT)
-        {
-            return await _context.Clientes.FirstOrDefaultAsync(c => c.CUIT == cuIT);
-        }
 
         public async Task Delete(int id)
         {
@@ -41,9 +53,20 @@ namespace GestionComex.Data.Repository
             }
         }
 
-        public async Task<Clientes?> getById(int id)
+        public async Task Edit(ClienteEditDTO clientesDTO)
         {
-            return await _context.Clientes.FindAsync(id);
+           var clienteExistente = await _context.Clientes.FindAsync(clientesDTO.Id);
+
+            if(clienteExistente == null)
+            {
+                throw new Exception("Cliente no encontrado"); 
+            }
+
+            clienteExistente.Telefono = clientesDTO.Telefono;
+            clienteExistente.Direccion = clientesDTO.Direccion;
+            clienteExistente.Activo = clientesDTO.Activo;
+
+            await _context.SaveChangesAsync();  
         }
     }
 }

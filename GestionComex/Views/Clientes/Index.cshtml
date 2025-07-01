@@ -15,7 +15,7 @@
 
 <table class="table table-striped table-bordered">
     <thead class="table-light">
-        <tr>
+        <tr class ="text-center">
 @*             <th>ID</th>
  *@            <th>CUIT</th>
             <th>Razón Social</th>
@@ -30,11 +30,12 @@
         {
             <tr>
 @*                 <td>@cliente.Id</td>
- *@                <td>@cliente.CUIT</td>
-                <td>@cliente.RazonSocial</td>
-                <td>@cliente.Telefono</td>
-                <td>@cliente.Direccion</td>
-                <td>
+            *@
+                <td class="text-center">@cliente.CUIT</td>
+                <td class ="text-center">@cliente.RazonSocial</td>
+                <td class="text-center">@cliente.Telefono</td>
+                <td class="text-center">@cliente.Direccion</td>
+                <td class="text-center">
                     @if (cliente.Activo)
                     {
                         <span class="badge bg-success">Sí</span>
@@ -44,13 +45,23 @@
                         <span class="badge bg-danger">No</span>
                     }
                 </td>
-                <td>
+                <td class="text-center">
                     <a asp-action="Edit" asp-route-id="@cliente.Id" class="btn btn-sm btn-primary">Editar</a>
-                    <a asp-action="Details" asp-route-id="@cliente.Id" class="btn btn-sm btn-info">Detalles</a>
-                    <a asp-action="Delete" asp-route-id="@cliente.Id" class="btn btn-sm btn-danger">Eliminar</a>
-                </td>   
+                    <form asp-action="Delete" asp-route-id="@cliente.Id" method="post" class="d-inline delete-form">
+                        @Html.AntiForgeryToken()
+                        <button type="button"
+                                class="btn btn-sm btn-danger btn-eliminar"
+                                data-nombre="@cliente.RazonSocial">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>
 </table>
+
+@section Scripts {
+    <script src="~/js/clientes.js" asp-append-version="true"></script>
+}
 

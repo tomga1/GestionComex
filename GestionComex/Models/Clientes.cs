@@ -22,7 +22,6 @@ namespace GestionComex.Models
 
 
         [Required(ErrorMessage = "La dirección es obligatoria")]
-
         [StringLength(200, ErrorMessage = "La dirección no puede superar los 200 caracteres")]
         public string? Direccion { get; set; }
 

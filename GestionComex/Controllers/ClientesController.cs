@@ -1,8 +1,11 @@
 ﻿using GestionComex.Data.Repository.Interfaces;
+using GestionComex.DTOs;
 using GestionComex.Models;
 using GestionComex.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace GestionComex.Controllers
 {
@@ -10,12 +13,14 @@ namespace GestionComex.Controllers
     {
         private readonly IClienteRepository _clienteRepository;
         private readonly IClienteService _clienteService;
+
         public ClientesController(IClienteRepository clienteRepository,
-            IClienteService clienteService)
+                                  IClienteService clienteService)
         {
             _clienteRepository = clienteRepository;
             _clienteService = clienteService;   
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -23,6 +28,7 @@ namespace GestionComex.Controllers
             var clientes = await _clienteRepository.GetAll();
             return View(clientes);
         }
+
 
         [HttpGet]        
         public ActionResult Create()
@@ -35,6 +41,7 @@ namespace GestionComex.Controllers
             };
             return View(cliente);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -58,7 +65,6 @@ namespace GestionComex.Controllers
         }
 
 
-
         [HttpGet]
         public async Task<IActionResult> ObtenerRazonSocial(string cuit)
         {
@@ -73,33 +79,49 @@ namespace GestionComex.Controllers
             }
         }
 
-        // GET: ClientesController/Details/5
-        public ActionResult Details(int id)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var cliente = await _clienteService.getById(id);
+
+            if(cliente == null)
+            {
+                return NotFound();  
+            }
+
+            var dto = new ClienteEditDTO
+            {
+                Id = cliente.Id,
+                CUIT = cliente.CUIT,
+                RazonSocial = cliente.RazonSocial,
+                Telefono = cliente.Telefono,
+                Direccion = cliente.Direccion,
+                Activo = cliente.Activo
+            };
+            return View(dto);
         }
 
-
-        // GET: ClientesController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: ClientesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(ClienteEditDTO dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(dto);
+            }
+
             try
             {
+                await _clienteService.Edit(dto);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ModelState.AddModelError("", $"Error al editar cliente: {ex.Message}");
+                return View(dto);
             }
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
@@ -130,5 +152,14 @@ namespace GestionComex.Controllers
             return RedirectToAction(nameof(Index));
 
         }
+
+
+        public ActionResult Details(int id)
+        {
+            return View();
+        }
+
+
+        
     }
 }

@@ -51,3 +51,29 @@
         });
     });
 });
+
+
+
+$(document).ready(function () {
+
+    $(".btn-eliminar").on("click", function () {
+        const $btn = $(this);
+        const nombre = $btn.data("nombre");
+
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: `¿Deseás eliminar al cliente "${nombre}"?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // submit al form padre
+                $btn.closest("form.delete-form").submit();
+            }
+        });
+    });
+});
